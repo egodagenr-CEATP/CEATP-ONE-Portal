@@ -1,0 +1,44 @@
+body {
+  margin:0;
+  font-family:Segoe UI, Arial, sans-serif;
+  background:#F5F8FC;
+}
+
+.sidebar {
+  width:240px;
+  position:fixed;
+  height:100%;
+  background:#123B8F;
+  color:white;
+  padding:20px;
+}
+
+.sidebar a {
+  display:block;
+  color:white;
+  padding:12px;
+  text-decoration:none;
+  border-radius:8px;
+}
+
+.sidebar a:hover {
+  background:#245EDB;
+}
+
+main {
+  margin-left:260px;
+  padding:30px;
+}
+
+.cards {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;
+}
+
+.card {
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
