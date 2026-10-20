@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CEATP-I Tender Timeline</title>
+<style>
+:root{--bg:#eceff3;--card:#fff;--ink:#14273d;--mut:#5d6b7a;--line:#cfd6de;--done:#2a6f97;--act:#d98200;--pen:#9aa7b4;--bad:#b3261e;--warnbg:#fff1d6}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1a26;--card:#172536;--ink:#e6edf4;--mut:#93a4b6;--line:#2c3e52;--done:#6fb6e0;--act:#f0a83a;--pen:#56677a;--bad:#ff8a80;--warnbg:#3a2e14}}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Bahnschrift,"Segoe UI",system-ui,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:20px clamp(14px,4vw,40px) 8px}
+h1{margin:0;font-size:1.5rem;letter-spacing:.01em}
+.sub{color:var(--mut);font-size:.85rem}
+button{font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+button:focus-visible{outline:2px solid var(--done);outline-offset:2px}
+button.on{background:var(--ink);color:var(--bg)}
+main{padding:0 clamp(14px,4vw,40px) 40px;max-width:1200px;margin:auto}
+h2{font-size:1.1rem;margin:28px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+.tender{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-bottom:16px;overflow:hidden}
+.th{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between;padding:14px 16px 4px;cursor:pointer}
+.th b{font-size:1.02rem}.th span{color:var(--mut);font-size:.85rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:4px 16px 8px}
+.chip{font-size:.78rem;border:1px solid var(--line);border-radius:4px;padding:2px 8px;color:var(--mut)}
+.chip.warn{background:var(--warnbg);color:var(--act);border-color:var(--act)}
+.chip.bad{color:var(--bad);border-color:var(--bad)}
+.track{display:flex;overflow-x:auto;padding:14px 10px 10px}
+.step{flex:1 0 98px;min-width:98px;text-align:center;background:none;border:0;position:relative;padding:0 4px}
+.step::before{content:"";position:absolute;top:10px;left:-50%;right:50%;height:3px;background:var(--pen)}
+.step:first-child::before{display:none}
+.step.done::before,.step.active::before{background:var(--done)}
+.dot{position:relative;display:block;width:22px;height:22px;margin:0 auto 6px;border-radius:50%;border:3px solid var(--pen);background:var(--card)}
+.step.done .dot{background:var(--done);border-color:var(--done)}
+.step.active .dot{border-color:var(--act);background:var(--act)}
+.step.late .dot{border-color:var(--bad)}
+.step.sel .dot{box-shadow:0 0 0 4px color-mix(in srgb,var(--ink) 22%,transparent)}
+.step .l{display:block;font-size:.78rem;line-height:1.2}.step .d{display:block;font-size:.72rem;color:var(--mut)}
+.step.late .d{color:var(--bad)}
+.n{display:inline-block;background:var(--ink);color:var(--bg);border-radius:9px;font-size:.65rem;padding:0 6px;margin-left:3px}
+.panel{border-top:1px solid var(--line);padding:12px 16px;background:color-mix(in srgb,var(--bg) 55%,var(--card));animation:o .15s}
+@keyframes o{from{opacity:0}to{opacity:1}}@media(prefers-reduced-motion:reduce){.panel{animation:none}}
+.panel h3,.det h3{margin:0 0 4px;font-size:.95rem}
+ul{margin:6px 0;padding-left:18px}li{margin:2px 0}.m{color:var(--mut)}
+.det{border-top:1px solid var(--line);padding:12px 16px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+table{border-collapse:collapse;width:100%;font-size:.85rem}td,th{text-align:left;padding:3px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.sub{display:flex;overflow-x:auto;padding:10px 0 4px}
+.sn{flex:0 0 138px;background:none;border:0;text-align:center;position:relative;padding:0 4px}
+.sn::before{content:"";position:absolute;top:8px;left:-50%;right:50%;height:2px;background:var(--line)}
+.sn:first-child::before{display:none}
+.sd{position:relative;display:block;width:14px;height:14px;margin:1px auto 5px;border-radius:50%;background:var(--pen)}
+.sn.extension .sd,.sn.revision .sd{background:var(--act)}.sn.clarification .sd{background:var(--done)}.sn.document .sd{background:var(--ink)}
+.sn.on .sd{box-shadow:0 0 0 3px color-mix(in srgb,var(--ink) 25%,transparent)}
+.sl{display:block;font-size:.74rem;line-height:1.2}.sw{display:block;font-size:.7rem;color:var(--mut)}
+.card3{border-left:3px solid var(--done);background:var(--card);padding:8px 12px;margin:6px 0;border-radius:0 6px 6px 0}
+.tag{font-size:.7rem;border:1px solid var(--line);border-radius:4px;padding:0 6px;color:var(--mut)}
+.cm{grid-column:1/-1}.mem{padding:6px 0;border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.tb.on{background:var(--ink);color:var(--bg)}
+.det2{border-top:1px solid var(--line);padding:12px 16px}
+.sc{display:grid;grid-template-columns:minmax(0,2fr) minmax(220px,1fr);gap:18px}@media(max-width:700px){.sc{grid-template-columns:1fr}}
+.lg{max-width:75ch;margin:4px 0}.kd>div{margin:8px 0}
+.vtw{overflow-x:auto}.vt{width:100%}.vt th,.vt td{padding:6px 8px;vertical-align:top}.vt td:nth-child(2),.vt td:nth-child(3){white-space:nowrap}.vt td:last-child{min-width:260px}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin:6px 0}
+.bc{text-align:left;display:flex;flex-direction:column;gap:2px;border-left:4px solid var(--pen)}.bc.bad{border-left-color:var(--bad)}.bc.win{border-left-color:var(--done)}.bc.on{outline:2px solid var(--ink)}
+.ed{display:none}body.edit .ed{display:inline-block}
+.ed{font-size:.78rem;padding:2px 8px;margin:2px 4px 2px 0}
+.x{color:var(--bad)}
+#hint{display:none;margin:0 clamp(14px,4vw,40px);padding:8px 12px;background:var(--warnbg);border-radius:6px;font-size:.85rem}
+body.edit #hint{display:block}
+.evts{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 12px;align-items:center}.evt{font-size:.82rem;border-left:3px solid var(--done);background:var(--card);padding:3px 10px;border-radius:0 4px 4px 0}
+@media print{header button,.ed,#hint{display:none!important}}
+</style></head>
+<body>
+<header>
+  <div><h1 id="ttl"></h1><div class="sub" id="upd"></div></div>
+  <div><button id="bEdit">Edit mode</button> <button id="bSave" class="ed">Download data.js</button></div>
+</header>
+<div id="hint">Edit mode: changes are held in this browser tab. Click <b>Download data.js</b>, then replace data.js on the site to publish them.</div>
+<main id="app"></main>
+<script src="data.js"></script>
+<script>
+if(!window.TENDERS_DATA){document.addEventListener("DOMContentLoaded",()=>{document.getElementById("app").innerHTML='<p style="padding:16px;background:#fff1d6;color:#14273d;border-radius:6px"><b>data.js was not found.</b> Put data.js in the same folder as this page and keep the file name exactly <code>data.js</code> (not "data (1).js"), then reload.</p>'});}
+</script>
+<script>
+if(window.TENDERS_DATA){
+const D = window.TENDERS_DATA; let edit = false, dirty = false; const sel = {}, open = {}, sel3 = {};
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const today = new Date(new Date().toDateString());
+const dt = d => new Date(d + "T00:00:00");
+const fmt = d => d ? dt(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "no date";
+const left = d => Math.round((dt(d) - today) / 864e5);
+const all = () => D.components.flatMap(c => c.tenders);
+const tOf = id => all().find(t => t.id === id);
+const okDate = s => s === "" || /^\d{4}-\d{2}-\d{2}$/.test(s);
+const ask = (msg, def = "") => { const v = prompt(msg, def); return v === null ? null : v.trim(); };
+
+function vchip(name, v) {
+  if (!v || (!v.original && !(v.extensions || []).length)) return `<span class="chip">${name} validity: not set</span>`;
+  const ex = v.extensions || [];
+  const cur = ex.reduce((m, e) => e.newExpiry > m ? e.newExpiry : m, v.original), n = left(cur);
+  const cls = n < 0 ? "bad" : n <= 14 ? "warn" : "";
+  return `<span class="chip ${cls}">${name} validity to ${fmt(cur)}: ${n < 0 ? "expired" : n + " days left"}${ex.length ? ", " + ex.length + " extension" + (ex.length > 1 ? "s" : "") : ""}</span>`;
+}
+function vblock(name, key, t) {
+  const v = t.validity[key];
+  return `<div><h3>${name} validity</h3><div class="m">Original expiry: ${fmt(v.original)} <button class="ed" data-a="vorig" data-t="${t.id}" data-k="${key}">Set</button></div>
+  ${v.extensions.length ? `<table><tr><th>Issued</th><th>New expiry</th><th>Ref</th><th>Reason</th><th></th></tr>${v.extensions.map((e, i) =>
+    `<tr><td>${fmt(e.issued)}</td><td>${fmt(e.newExpiry)}</td><td>${esc(e.ref)}</td><td>${esc(e.reason)}</td><td><button class="ed x" data-a="dext" data-t="${t.id}" data-k="${key}" data-i="${i}">Delete</button></td></tr>`).join("")}</table>` : `<div class="m">No extensions issued.</div>`}
+  <button class="ed" data-a="aext" data-t="${t.id}" data-k="${key}">Add extension</button></div>`;
+}
+function committee(name, t) {
+  const l = t.committees[name] || [], ttl = { BEC: "BEC (formerly TEC)", HLPC: "HLPC (formerly SCAPC / SHLPC)" }[name] || name;
+  return `<div class="cm"><h3>${ttl} (${l.length})</h3>${l.map((m, i) => `<div class="mem"><div><b>${esc(m.name)}</b> <span class="m">${esc(m.role)}</span>${m.stage ? ` <span class="tag">${esc(m.stage)}</span>` : ""}</div><div class="m">${m.appointed ? "Appointed " + fmt(m.appointed) + " | " : ""}${esc(m.ref)}${m.file ? ` | <a href="${esc(m.file)}" target="_blank" rel="noopener">copy</a>` : ""} <button class="ed x" data-a="dmem" data-t="${t.id}" data-k="${name}" data-i="${i}">Delete</button></div></div>`).join("") || '<div class="m">No members recorded.</div>'}<button class="ed" data-a="amem" data-t="${t.id}" data-k="${name}">Add member</button></div>`;
+}
+const lat = v => (v.extensions || []).reduce((m, e) => e.newExpiry > m ? e.newExpiry : m, v.original || "");
+function getMS(t) {
+  const b = t.milestones.map((m, i) => ({ ...m, ri: i })), it = [];
+  [["Tender validity", "tender"], ["Security validity", "security"]].forEach(([n, k]) => {
+    const v = t.validity[k];
+    if (v.original) it.push({ label: n + ": original expiry", date: "", newDate: v.original, type: "revision", note: "" });
+    (v.extensions || []).forEach((e, j) => it.push({ label: n + ": extension " + (j + 1), date: e.issued, newDate: e.newExpiry, type: "extension", ref: e.ref, note: e.reason }));
+  });
+  const cur = lat(t.validity.tender);
+  b.splice(4, 0, { label: "Validity & security", date: cur, status: cur ? "active" : "pending", note: "Expiry dates and every extension, for tender validity and bid security.", items: it, virtual: true, ri: -1 });
+  const hm = b.find(x => x.ri === 6);
+  if (hm) hm.items = hm.items.concat(t.milestones.flatMap((m, i) => i === 6 ? [] : m.items.filter(x => x.type === "decision").map(x => ({ ...x, copy: true }))));
+  return b;
+}
+const TY = { extension: "Extension", revision: "Date change", clarification: "Clarification", document: "Letter", decision: "Decision", bidder: "Bidder", event: "Event" };
+function decCard(x, extra) {
+  return `<div class="card3"><b>${esc(x.label)}</b> <span class="tag">Decision</span><div class="m">${x.date ? fmt(x.date) : ""}${x.ref ? " | Ref: " + esc(x.ref) : ""}${x.tabled ? " | Tabled: " + esc(x.tabled) : ""}</div>${x.hl ? `<ul>${x.hl.map(h => `<li>${esc(h)}</li>`).join("")}</ul>` : ""}${x.note ? `<div class="m">${esc(x.note)}</div>` : ""}${x.votes ? `<div class="m">Votes: ${esc(x.votes)}</div>` : ""}${extra || ""}</div>`;
+}
+function subTL(t, i, m) {
+  const arr = m.items.map((x, j) => ({ ...x, _j: j })), bid = arr.filter(x => x.type === "bidder");
+  const rest = arr.filter(x => x.type !== "bidder").sort((a, b) => (a.date || a.newDate || "9999").localeCompare(b.date || b.newDate || "9999"));
+  const k = sel3[t.id + ":" + i], s = k == null ? null : rest[k], bk = sel3[t.id + ":b" + i], bsel = bk == null ? null : bid[bk];
+  const del = x => edit && !m.virtual && !x.copy ? `<button class="ed x" data-a="ditem" data-t="${t.id}" data-i="${m.ri}" data-j="${x._j}">Delete</button>` : "";
+  const nodes = rest.map((x, n) => `<button class="sn ${x.type || "event"} ${k === n ? "on" : ""}" data-a="item" data-t="${t.id}" data-i="${i}" data-k="${n}"><span class="sd"></span><span class="sl">${esc(x.label)}</span><span class="sw">${x.date && x.newDate ? fmt(x.date) + " → " + fmt(x.newDate) : fmt(x.date || x.newDate)}</span></button>`).join("");
+  const st = x => /Non-resp|Excluded/.test(x.status || "") ? "bad" : /Recommended/.test(x.status || "") ? "win" : "";
+  const detail = s ? (s.type === "decision" || s.hl ? decCard(s, del(s)) : `<div class="card3"><b>${esc(s.label)}</b> <span class="tag">${TY[s.type] || "Event"}</span><div class="m">${s.date ? "Date: " + fmt(s.date) : ""}${s.newDate ? " | New date: " + fmt(s.newDate) : ""}${s.ref ? " | Ref: " + esc(s.ref) : ""}</div><div>${esc(s.note)}</div>${del(s)}</div>`) : (rest.length ? `<div class="m">Select an entry above for its details.</div>` : "");
+  const bidders = bid.length ? `<h3>${m.ri === 1 ? "Prospective bidders" : "Bidders"} (${bid.length})</h3><div class="bgrid">${bid.map((x, n) => `<button class="bc ${st(x)} ${bk === n ? "on" : ""}" data-a="bidder" data-t="${t.id}" data-i="${i}" data-k="${n}"><b>${esc(x.label)}</b><span class="m">${esc(x.status || "Submitted")}</span></button>`).join("")}</div>` + (bsel ? `<div class="card3"><b>${esc(bsel.label)}</b> <span class="tag">${esc(bsel.status || "Submitted")}</span><div class="m">${esc(bsel.note)}</div>${bsel.detail ? `<div>${esc(bsel.detail)}</div>` : ""}${del(bsel)}</div>` : `<div class="m">Select a bidder for its full details.</div>`) : (m.ri === 3 ? `<div class="m">No bids received yet.</div>` : "");
+  return (rest.length ? `<div class="sub">${nodes}</div>` : "") + detail + bidders + (!arr.length && m.ri !== 3 ? `<div class="m">No entries yet.</div>` : "");
+}
+function vtable(t) {
+  const T = t.validity.tender, S = t.validity.security, te = T.extensions || [], se = S.extensions || [], n = Math.max(te.length, se.length);
+  const rows = [`<tr><td>Original</td><td>${fmt(T.original)}</td><td>${fmt(S.original)}</td><td></td><td></td></tr>`];
+  for (let j = 0; j < n; j++) {
+    const a = te[j] || {}, b = se[j] || {};
+    rows.push(`<tr><td>Extension ${j + 1}<br><span class="m">${fmt(a.issued || b.issued)}</span></td><td>${fmt(a.newExpiry)}</td><td>${fmt(b.newExpiry)}</td><td>${esc(a.ref || b.ref)}</td><td>${esc(a.reason)}${b.reason && b.reason !== a.reason ? '<br><span class="m">Security: ' + esc(b.reason) + '</span>' : ""}</td></tr>`);
+  }
+  const bt = (a, k, l, i) => `<button class="ed${a === "dext" ? " x" : ""}" data-a="${a}" data-t="${t.id}" data-k="${k}"${i != null ? ` data-i="${i}"` : ""}>${l}</button>`;
+  return `<div class="vtw"><table class="vt"><tr><th>Stage</th><th>Tender validity to</th><th>Security valid to</th><th>Reference</th><th>Reason / approval</th></tr>${rows.join("")}</table></div><div>${bt("vorig", "tender", "Set original tender expiry")}${bt("vorig", "security", "Set original security expiry")}${bt("aext", "tender", "Add tender extension")}${bt("aext", "security", "Add security extension")}${bt("dext", "tender", "Delete last tender extension", te.length - 1)}${bt("dext", "security", "Delete last security extension", se.length - 1)}</div>`;
+}
+function detail(t) {
+  const tab = open[t.id], T = [["scope", "Scope"], ["valid", "Validity & security"], ["comm", "Committees"], ["dec", "Decisions"]];
+  const bar = `<div class="tabs">${T.map(([k, l]) => `<button class="tb ${tab === k ? "on" : ""}" data-a="tab" data-t="${t.id}" data-k="${k}">${l}</button>`).join("")}</div>`;
+  let body = "";
+  if (tab === "scope") body = `<div class="sc"><div><h3>Scope</h3><p class="lg">${esc(t.scope) || '<span class="m">Not entered.</span>'}</p></div><div class="kd"><h3>Key data</h3><div><b>Reference</b><br>${esc(t.ref) || "-"}</div><div><b>Estimated cost</b><br>${esc(t.estCost) || "-"}</div><button class="ed" data-a="etend" data-t="${t.id}">Edit title, ref, estimate, scope</button></div></div>`;
+  else if (tab === "valid") body = vtable(t);
+  else if (tab === "comm") body = committee("HLPC", t) + committee("BEC", t);
+  else { const all = t.milestones.flatMap(m => m.items.filter(x => x.type === "decision")).sort((a, b) => (a.date || "9999").localeCompare(b.date || "9999")); body = all.length ? all.map(x => decCard(x)).join("") : '<div class="m">No decisions recorded.</div>'; }
+  return `<div class="det2">${bar}${body}</div>`;
+}
+function panel(t, i) {
+  const m = getMS(t)[i];
+  return `<div class="panel"><h3>${esc(m.label)} <span class="m">(${m.virtual ? "built from validity records" : m.status}, ${fmt(m.date)})</span></h3>${m.note ? `<div>${esc(m.note)}</div>` : ""}${subTL(t, i, m)}${m.virtual ? "" : `<div><button class="ed" data-a="emile" data-t="${t.id}" data-i="${m.ri}">Edit status, date, note</button><button class="ed" data-a="aitem" data-t="${t.id}" data-i="${m.ri}">Add entry</button></div>`}</div>`;
+}
+function tender(t) {
+  const s = sel[t.id];
+  const steps = getMS(t).map((m, i) => {
+    const late = m.status !== "done" && m.date && left(m.date) < 0;
+    return `<button class="step ${m.status} ${late ? "late" : ""} ${s === i ? "sel" : ""}" data-a="sel" data-t="${t.id}" data-i="${i}" aria-expanded="${s === i}"><span class="dot"></span><span class="l">${esc(m.label)}${m.items.length ? `<span class="n">${m.items.length}</span>` : ""}</span><span class="d">${fmt(m.date)}</span></button>`;
+  }).join("");
+  return `<section class="tender"><div class="th" data-a="tog" data-t="${t.id}"><b>${esc(t.title)}</b><span>${esc(t.ref)} ${t.estCost ? "| Estimate: " + esc(t.estCost) : ""}</span></div>
+  <div class="chips">${vchip("Tender", t.validity.tender)}${vchip("Security", t.validity.security)}</div>
+  <div class="track">${steps}</div>${s != null ? panel(t, s) : ""}
+  ${open[t.id] ? detail(t) : ""}</section>`;
+}
+function render() {
+  $t = document.getElementById("ttl"); $t.textContent = D.project + " tender timeline";
+  document.getElementById("upd").textContent = "Last updated " + fmt(D.updated) + ". Select a milestone for its entries; select a tender title for scope, committees and validity.";
+  document.getElementById("app").innerHTML = D.components.map(c => `<h2>${esc(c.code)}</h2><div class="evts">${(c.events || []).map((v, i) => `<span class="evt"><b>${esc(v.label)}</b> ${fmt(v.date)}${v.note ? " | " + esc(v.note) : ""} <button class="ed x" data-a="devt" data-c="${esc(c.code)}" data-i="${i}">Delete</button></span>`).join("")}<button class="ed" data-a="aevt" data-c="${esc(c.code)}">Add component event</button></div>${c.tenders.map(tender).join("")}`).join("");
+  document.body.classList.toggle("edit", edit);
+  document.getElementById("bEdit").classList.toggle("on", edit);
+}
+function touch() { dirty = true; D.updated = new Date().toISOString().slice(0, 10); render(); }
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-a]"); if (!b) return;
+  const a = b.dataset.a, t = tOf(b.dataset.t), i = +b.dataset.i, j = +b.dataset.j, k = b.dataset.k;
+  if (a === "item") { const key = t.id + ":" + i; sel3[key] = sel3[key] === +k ? null : +k; return render(); }
+  if (a === "sel") { sel[t.id] = sel[t.id] === i ? null : i; if (sel[t.id] != null) open[t.id] = false; return render(); }
+  if (a === "bidder") { const key = t.id + ":b" + i; sel3[key] = sel3[key] === +k ? null : +k; return render(); }
+  if (a === "tog") { open[t.id] = open[t.id] ? false : "scope"; if (open[t.id]) sel[t.id] = null; return render(); }
+  if (a === "tab") { open[t.id] = k; return render(); }
+  if (!edit) return;
+  let v;
+  if (a === "aevt" || a === "devt") {
+    const c = D.components.find(x => x.code === b.dataset.c); c.events = c.events || [];
+    if (a === "devt") { if (!confirm("Delete this event?")) return; c.events.splice(i, 1); }
+    else { v = ask("Event as: label | date (YYYY-MM-DD) | note"); if (!v) return; const [label, date = "", note = ""] = v.split("|").map(x => x.trim()); if (!okDate(date)) return alert("Date must look like 2026-10-09."); c.events.push({ label, date, note }); }
+    return touch();
+  }
+  if (a === "emile") {
+    const m = t.milestones[i];
+    const d = ask("Date (YYYY-MM-DD, blank for none)", m.date); if (d === null) return;
+    const s = ask("Status: done, active or pending", m.status); if (s === null) return;
+    const n = ask("Note (venue, remarks)", m.note); if (n === null) return;
+    if (!okDate(d) || !["done", "active", "pending"].includes(s)) return alert("Use a date like 2026-10-09 and a status of done, active or pending.");
+    Object.assign(m, { date: d, status: s, note: n });
+  } else if (a === "aitem") {
+    v = ask("Entry as: label | date (YYYY-MM-DD) | note"); if (!v) return;
+    const [label, date = "", note = ""] = v.split("|").map(x => x.trim());
+    if (!okDate(date)) return alert("Date must look like 2026-10-09.");
+    t.milestones[i].items.push({ label, date, note });
+  } else if (a === "ditem") { if (confirm("Delete this entry?")) t.milestones[i].items.splice(j, 1); else return; }
+  else if (a === "amem") {
+    v = ask(`${k} member as: name | role | appointed (YYYY-MM-DD) | letter ref | copy file path (optional)`); if (!v) return;
+    const [name, role = "", appointed = "", ref = "", file = ""] = v.split("|").map(x => x.trim());
+    if (!okDate(appointed)) return alert("Date must look like 2026-10-09.");
+    (t.committees[k] = t.committees[k] || []).push({ name, role, appointed, ref, file });
+  } else if (a === "dmem") { if (confirm("Delete this member?")) t.committees[k].splice(i, 1); else return; }
+  else if (a === "vorig") {
+    v = ask("Original expiry (YYYY-MM-DD)", t.validity[k].original); if (v === null) return;
+    if (!okDate(v)) return alert("Date must look like 2026-10-09."); t.validity[k].original = v;
+  } else if (a === "aext") {
+    v = ask("Extension as: issued date | new expiry date | letter ref | reason (dates YYYY-MM-DD)"); if (!v) return;
+    const [issued, newExpiry, ref = "", reason = ""] = v.split("|").map(x => x.trim());
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(issued) || !/^\d{4}-\d{2}-\d{2}$/.test(newExpiry)) return alert("Both dates are required, like 2026-10-09.");
+    t.validity[k].extensions.push({ issued, newExpiry, ref, reason });
+  } else if (a === "dext") { if (confirm("Delete this extension?")) t.validity[k].extensions.splice(i, 1); else return; }
+  else if (a === "etend") {
+    const title = ask("Title", t.title); if (title === null) return;
+    const ref = ask("Tender / IFB reference", t.ref); if (ref === null) return;
+    const est = ask("Estimated cost", t.estCost); if (est === null) return;
+    const scope = ask("Scope of works", t.scope); if (scope === null) return;
+    Object.assign(t, { title, ref, estCost: est, scope });
+  }
+  touch();
+});
+document.getElementById("bEdit").onclick = () => { edit = !edit; render(); };
+document.getElementById("bSave").onclick = () => {
+  const blob = new Blob(["// CEATP-I tender data. Replace data.js on the site with this file.\nwindow.TENDERS_DATA = " + JSON.stringify(D, null, 2) + ";\n"], { type: "text/javascript" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "data.js"; a.click(); dirty = false;
+};
+window.addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+render();
+}
+</script></body></html>
