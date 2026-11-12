@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bid Opening Committee Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#eef2f1;--card:#fff;--ink:#1b2a2e;--muted:#5a6a6f;--line:#d3dcdb;--teal:#0f5c63;--teal-bg:#dcefef;
+--hlpc:#5a3d8a;--hlpc-bg:#ece6f6;--dpc:#7a4f00;--dpc-bg:#fbecc8;--mpc:#0b5a8a;--mpc-bg:#dcecf8;--remark-bg:#fff6dc;--remark-bar:#c58a00}
+@media (prefers-color-scheme:dark){:root{--paper:#121a1c;--card:#1a2528;--ink:#e6eeee;--muted:#9fb0b3;--line:#2f3e42;--teal:#7fcfd4;--teal-bg:#1d3a3d;
+--hlpc:#cdb8f5;--hlpc-bg:#2e2547;--dpc:#f2cf86;--dpc-bg:#41330f;--mpc:#9ccdf0;--mpc-bg:#16344a;--remark-bg:#33290d;--remark-bar:#c58a00}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
+header{padding:28px 0 12px}
+h1{font:700 28px/1.2 "Source Serif 4",Georgia,serif;margin:0 0 4px}
+.sub{color:var(--muted);margin:0}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0 8px}
+input[type=search]{flex:1 1 240px;padding:10px 12px;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px}
+.tabs{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+button{font:inherit;color:var(--ink);background:var(--card);border:0;padding:9px 14px;cursor:pointer}
+.tabs button[aria-pressed=true]{background:var(--teal);color:var(--card);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+.chip[aria-pressed=true]{background:var(--teal-bg);border-color:var(--teal);font-weight:600}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.count{color:var(--muted);margin:10px 0 14px}
+.day{display:grid;grid-template-columns:120px 1fr;background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:16px;overflow:hidden}
+.date{padding:16px;border-right:1px solid var(--line);background:var(--teal-bg)}
+.date .n{font:700 44px/1 "Source Serif 4",Georgia,serif;color:var(--teal)}
+.date .m{font-weight:600;margin-top:4px}.date .w{color:var(--muted)}
+.body{padding:6px 18px 6px}
+.when{margin:12px 0 0;color:var(--muted)}.when b{color:var(--ink)}
+.tender{padding:14px 0;border-top:1px solid var(--line)}.tender:first-of-type{border-top:0}
+.tender h3{font:600 17px/1.35 "Source Sans 3",system-ui,sans-serif;margin:6px 0 2px}
+.no{color:var(--muted);font-size:14px;word-break:break-all}
+.tag{display:inline-block;font-weight:600;font-size:13px;padding:1px 9px;border-radius:5px;background:var(--line);color:var(--ink)}
+.tag.HLPC{background:var(--hlpc-bg);color:var(--hlpc)}.tag.DPC{background:var(--dpc-bg);color:var(--dpc)}.tag.MPC{background:var(--mpc-bg);color:var(--mpc)}
+ul.mem{list-style:none;margin:10px 0 0;padding:0}
+ul.mem li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;padding:6px 0;border-bottom:1px solid var(--line)}
+ul.mem li:last-child{border-bottom:0}
+.cap{font-size:14px;font-weight:600;padding:1px 9px;border-radius:5px;border:1px solid var(--line);white-space:nowrap}
+.cap.chair{background:var(--teal);border-color:var(--teal);color:var(--card)}
+.cap.min{background:var(--dpc-bg);border-color:transparent;color:var(--dpc)}
+.cap.alt{background:var(--hlpc-bg);border-color:transparent;color:var(--hlpc)}
+.note{flex-basis:100%;color:var(--muted);font-size:14px}
+.remark{margin:10px 0 0;padding:8px 12px;background:var(--remark-bg);border-left:4px solid var(--remark-bar);border-radius:4px;font-size:15px}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:10px}
+summary{padding:12px 16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+summary span{font-weight:400;color:var(--muted)}
+details ul{list-style:none;margin:0;padding:0 16px 8px}
+details li{padding:9px 0;border-top:1px solid var(--line)}
+.empty{padding:24px;background:var(--card);border:1px dashed var(--line);border-radius:10px}
+@media (max-width:600px){.day{grid-template-columns:1fr}.date{display:flex;gap:10px;align-items:baseline;border-right:0;border-bottom:1px solid var(--line)}.date .m{margin:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Bid Opening Committee Register</h1>
+<p class="sub">Tenders opened on each BOC day and the committee that sat.</p>
+<div class="bar">
+<input type="search" id="q" placeholder="Search date, tender no., title or member" aria-label="Search the register">
+<div class="tabs"><button id="tDay" aria-pressed="true">By day</button><button id="tMem" aria-pressed="false">By member</button></div>
+</div>
+<div class="chips" id="chips"></div>
+</header>
+<p class="count" id="count" aria-live="polite"></p>
+<main id="out"><p class="empty">Loading the register…</p></main>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+let days = [], view = 'day', q = '', auth = 'all';
+
+function parse(txt) {
+  const out = [];
+  txt.replace(/\r/g, '').split(/^\s*-{3,}\s*$/m).forEach(b => {
+    if (!b.trim()) return;
+    const d = {date: '', time: '', venue: '', tenders: []};
+    let t = null, inMem = false;
+    b.split('\n').forEach(raw => {
+      const line = raw.trim();
+      if (!line) { inMem = false; return; }
+      if (line[0] === '#') return;
+      const m = line.match(/^(DATE|TIME|VENUE|TENDER|MEMBERS|REMARK):\s*(.*)$/i);
+      if (m) {
+        const k = m[1].toUpperCase(), v = m[2].trim();
+        if (k === 'DATE') d.date = v;
+        else if (k === 'TIME') d.time = v;
+        else if (k === 'VENUE') d.venue = v;
+        else if (k === 'TENDER') {
+          const p = v.split('|').map(s => s.trim());
+          t = {no: p[0] || '', title: p[1] || '', auth: (p[2] || '').toUpperCase(), members: [], remark: '', same: false};
+          d.tenders.push(t); inMem = false;
+        } else if (k === 'MEMBERS' && t) { inMem = true; t.same = /^same/i.test(v); }
+        else if (k === 'REMARK' && t) { t.remark = v; inMem = false; }
+        return;
+      }
+      if (inMem && t) { const p = line.split('|').map(s => s.trim()); t.members.push({name: p[0], cap: p[1] || ''}); }
+    });
+    d.tenders.forEach((t, i) => { if (t.same && !t.members.length && i > 0) t.members = d.tenders[i - 1].members.slice(); });
+    if (d.date) out.push(d);
+  });
+  return out.sort((a, b) => b.date.localeCompare(a.date));
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const dt = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const longDate = s => dt(s).toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'});
+const capInfo = c => { const i = c.indexOf('('); return {main: (i < 0 ? c : c.slice(0, i)).trim(), note: i < 0 ? '' : c.slice(i).replace(/^\(|\)$/g, '').trim()}; };
+const capClass = c => { c = c.toLowerCase(); return c.includes('chair') ? 'chair' : c.includes('ministry') ? 'min' : c.includes('alternate') ? 'alt' : ''; };
+const hit = h => !q || q.split(/\s+/).every(w => h.toLowerCase().includes(w));
+const pass = t => auth === 'all' || t.auth === auth;
+
+function memberItem(m) {
+  const c = capInfo(m.cap);
+  return `<li><span>${esc(m.name)}</span><span class="cap ${capClass(c.main)}">${esc(c.main)}</span>${c.note ? `<span class="note">${esc(c.note)}</span>` : ''}</li>`;
+}
+
+function dayView() {
+  let nDays = 0, nTenders = 0, html = '';
+  days.forEach(d => {
+    const ts = d.tenders.filter(t => pass(t) && hit([d.date, longDate(d.date), t.no, t.title, t.remark, t.members.map(m => m.name).join(' ')].join(' ')));
+    if (!ts.length) return;
+    nDays++; nTenders += ts.length;
+    const D = dt(d.date);
+    html += `<section class="day"><div class="date"><div class="n">${D.getDate()}</div><div class="m">${D.toLocaleDateString('en-GB', {month: 'long', year: 'numeric'})}</div><div class="w">${D.toLocaleDateString('en-GB', {weekday: 'long'})}</div></div><div class="body">
+      <p class="when"><b>${esc(d.time)}</b>&nbsp; ${esc(d.venue)}</p>` +
+      ts.map(t => `<article class="tender"><span class="tag ${esc(t.auth)}">${esc(t.auth || 'Authority not set')}</span><h3>${esc(t.title)}</h3><div class="no">${esc(t.no)}</div>
+        <ul class="mem">${t.members.map(memberItem).join('')}</ul>${t.remark ? `<p class="remark">${esc(t.remark)}</p>` : ''}</article>`).join('') + `</div></section>`;
+  });
+  $('#count').textContent = nTenders ? `${nTenders} tender${nTenders > 1 ? 's' : ''} opened on ${nDays} BOC day${nDays > 1 ? 's' : ''}` : '';
+  return html || '<p class="empty">Nothing matches. Clear the search or choose All authorities.</p>';
+}
+
+function memberView() {
+  const map = {};
+  days.forEach(d => d.tenders.forEach(t => { if (!pass(t)) return;
+    t.members.forEach(m => {
+      if (!hit([m.name, d.date, longDate(d.date), t.no, t.title].join(' '))) return;
+      (map[m.name] = map[m.name] || []).push({d, t, cap: m.cap});
+    }); }));
+  const names = Object.keys(map).sort((a, b) => map[b].length - map[a].length || a.localeCompare(b));
+  $('#count').textContent = names.length ? `${names.length} member${names.length > 1 ? 's' : ''}` : '';
+  if (!names.length) return '<p class="empty">Nothing matches. Clear the search or choose All authorities.</p>';
+  return names.map(n => {
+    const a = map[n], nd = new Set(a.map(x => x.d.date)).size;
+    return `<details><summary>${esc(n)}<span>${a.length} tender${a.length > 1 ? 's' : ''} on ${nd} day${nd > 1 ? 's' : ''}</span></summary><ul>` +
+      a.map(x => { const c = capInfo(x.cap); return `<li><b>${longDate(x.d.date)}</b> <span class="tag ${esc(x.t.auth)}">${esc(x.t.auth)}</span> <span class="cap ${capClass(c.main)}">${esc(c.main)}</span><br>${esc(x.t.title)}<div class="no">${esc(x.t.no)}</div>${c.note ? `<div class="note">${esc(c.note)}</div>` : ''}</li>`; }).join('') + `</ul></details>`;
+  }).join('');
+}
+
+function chips() {
+  const set = [...new Set(days.flatMap(d => d.tenders.map(t => t.auth)).filter(Boolean))].sort();
+  $('#chips').innerHTML = ['all', ...set].map(a => `<button class="chip" data-a="${esc(a)}" aria-pressed="${a === auth}">${a === 'all' ? 'All authorities' : esc(a)}</button>`).join('');
+}
+const render = () => { $('#out').innerHTML = view === 'day' ? dayView() : memberView(); };
+
+$('#q').addEventListener('input', e => { q = e.target.value.trim(); render(); });
+$('#chips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; auth = b.dataset.a; chips(); render(); });
+[['tDay', 'day'], ['tMem', 'member']].forEach(([id, v]) => $('#' + id).addEventListener('click', () => {
+  view = v; $('#tDay').setAttribute('aria-pressed', v === 'day'); $('#tMem').setAttribute('aria-pressed', v === 'member'); render();
+}));
+
+fetch('boc-data.txt?v=' + Date.now())
+  .then(r => { if (!r.ok) throw 0; return r.text(); })
+  .then(t => { days = parse(t); chips(); render(); })
+  .catch(() => { $('#out').innerHTML = '<p class="empty">Could not load boc-data.txt. Keep it in the same folder as this page and open the page from the website, not by opening the file directly.</p>'; });
+</script>
+</body>
+</html>

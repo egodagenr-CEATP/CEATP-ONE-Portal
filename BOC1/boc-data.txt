@@ -1,0 +1,39 @@
+# BOC REGISTER DATA
+# Add a new block at the top after every BOC, then save. Lines starting with # are ignored.
+# Each day: DATE (YYYY-MM-DD), TIME, VENUE, then one or more TENDER blocks, then a line of ----
+# TENDER: Tender No. | Title | Authority (HLPC, DPC or MPC)
+# MEMBERS: then one line per member:  Name | Capacity
+#   Capacity: Chairman, Member, Ministry Representative or Alternate (add a note in brackets)
+# MEMBERS: same as above   (copies the previous tender's committee on that day)
+# REMARK: optional note about that tender
+
+DATE: 2026-11-05
+TIME: 10:00
+VENUE: Office of the Chief Technical Officer, 4th Floor, Landmark Building, 385 Galle Road, Colombo 03
+
+TENDER: CEB/PR/TRPR/CEATP-I/2024/ICB/LOT A | Construction of New Habarana – Kappalthurai 220 kV Transmission Line (NHKTGEP Lot A, technical tender opening) | HLPC
+MEMBERS:
+Eng. C.A.A. Gunawardhana | Chairman
+Eng. W.W.S.D. Jayawardhana | Alternate (in place of Eng. W.H.M.P.M. Warakaulla)
+Mr. N.R. Egodage | Member (new member, first BOC; replaced Mr. A.S.C. De Silva, transferred to EDL)
+Ms. G.S. Sewwandi | Ministry Representative
+
+TENDER: CEB/AGM(PR)/PSSREIP-P4/IFB/2025/01/SHLPC | PSSREIP Package 4: Construction of 2 km Single Circuit Line In & Line Out (LILO) 132 kV Underground Cable to Peliyagoda GSS from Kelaniya – Kotugoda Double Circuit Transmission Line (price bid opening) | HLPC
+MEMBERS: same as above
+REMARK: Closing time 10:00 as in the letter. The opening took place immediately after the NHKTGEP Lot A opening finished.
+
+TENDER: NTNSP/CTO/2026/Build/Rent/01 | Lease/Rent an Office Building for Some Branches of the CTO Wing of the NTNSP | DPC
+MEMBERS:
+Eng. C.A.A. Gunawardhana | Chairman
+Eng. W.W.S.D. Jayawardhana | Alternate (in place of Eng. W.H.M.P.M. Warakaulla)
+Mr. N.R. Egodage | Member
+----
+DATE: 2026-11-12
+TIME: 10:00
+VENUE: the office of Director (Procurement). National Transmission Network Service Provider (Pvt) Ltd. 1St Floor, G.O.B.A. Building, 65/1. Sir Chittampalam A Gardiner Mawatha. Colombo 02.
+
+TENDER:NTNSP/CTO/DIR (PROCUREMENT)/ICB/2026/01/DPC |  Procurement of Supply and Delivery of 75 Nos of Low Intensity Discharge (LID) Lights (Aircraft Warning System) for Mannar Vavuniva 220 kV Transmission Line | DPC
+MEMBERS:
+Eng. C.A.A. Gunawardhana | Chairman
+Eng. W.H.M.P.M. Warakaulla | Member
+Mr. N.R. Egodage | Member
