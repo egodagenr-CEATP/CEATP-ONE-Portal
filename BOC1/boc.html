@@ -47,6 +47,16 @@ ul.mem li:last-child{border-bottom:0}
 .cap.min{background:var(--dpc-bg);border-color:transparent;color:var(--dpc)}
 .cap.alt{background:var(--hlpc-bg);border-color:transparent;color:var(--hlpc)}
 .note{flex-basis:100%;color:var(--muted);font-size:14px}
+details.fold{background:none;border:0;border-radius:0;margin:8px 0 0}
+.fold>summary{display:inline-flex;gap:8px;align-items:center;padding:5px 12px;border:1px solid var(--line);border-radius:999px;font-weight:600;font-size:15px;list-style:none;cursor:pointer;background:var(--card)}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary::after{content:"+";font-size:18px;line-height:1;color:var(--teal)}
+.fold[open]>summary::after{content:"\2212"}
+.fold[open]>summary{background:var(--teal-bg);border-color:var(--teal)}
+.fold ul{margin:6px 0 0;padding:0}.fold li{border-top:0}
+ul.bid li{padding:7px 0;border-bottom:1px solid var(--line)}ul.bid li:last-child{border-bottom:0}
+.info{display:inline-block;font-size:14px;color:var(--muted)}.info+.info::before{content:"|";margin:0 8px;color:var(--line)}
+.none{color:var(--muted);font-size:14px;margin:8px 0 0}
 .remark{margin:10px 0 0;padding:8px 12px;background:var(--remark-bg);border-left:4px solid var(--remark-bar);border-radius:4px;font-size:15px}
 details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:10px}
 summary{padding:12px 16px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
@@ -80,12 +90,12 @@ function parse(txt) {
   txt.replace(/\r/g, '').split(/^\s*-{3,}\s*$/m).forEach(b => {
     if (!b.trim()) return;
     const d = {date: '', time: '', venue: '', tenders: []};
-    let t = null, inMem = false;
+    let t = null, inMem = false, inBid = false;
     b.split('\n').forEach(raw => {
       const line = raw.trim();
-      if (!line) { inMem = false; return; }
+      if (!line) { inMem = false; inBid = false; return; }
       if (line[0] === '#') return;
-      const m = line.match(/^(DATE|TIME|VENUE|TENDER|MEMBERS|REMARK):\s*(.*)$/i);
+      const m = line.match(/^(DATE|TIME|VENUE|TENDER|MEMBERS|BIDDERS|REMARK):\s*(.*)$/i);
       if (m) {
         const k = m[1].toUpperCase(), v = m[2].trim();
         if (k === 'DATE') d.date = v;
@@ -93,13 +103,14 @@ function parse(txt) {
         else if (k === 'VENUE') d.venue = v;
         else if (k === 'TENDER') {
           const p = v.split('|').map(s => s.trim());
-          t = {no: p[0] || '', title: p[1] || '', auth: (p[2] || '').toUpperCase(), members: [], remark: '', same: false};
-          d.tenders.push(t); inMem = false;
-        } else if (k === 'MEMBERS' && t) { inMem = true; t.same = /^same/i.test(v); }
-        else if (k === 'REMARK' && t) { t.remark = v; inMem = false; }
+          t = {no: p[0] || '', title: p[1] || '', auth: (p[2] || '').toUpperCase(), members: [], bidders: [], remark: '', same: false};
+          d.tenders.push(t); inMem = false; inBid = false;
+        } else if (k === 'MEMBERS' && t) { inMem = true; inBid = false; t.same = /^same/i.test(v); }
+        else if (k === 'BIDDERS' && t) { inBid = true; inMem = false; }
+        else if (k === 'REMARK' && t) { t.remark = v; inMem = false; inBid = false; }
         return;
       }
-      if (inMem && t) { const p = line.split('|').map(s => s.trim()); t.members.push({name: p[0], cap: p[1] || ''}); }
+      if (t && (inMem || inBid)) { const p = line.split('|').map(s => s.trim()); if (inMem) t.members.push({name: p[0], cap: p[1] || ''}); else t.bidders.push({name: p[0], info: p.slice(1).filter(Boolean)}); }
     });
     d.tenders.forEach((t, i) => { if (t.same && !t.members.length && i > 0) t.members = d.tenders[i - 1].members.slice(); });
     if (d.date) out.push(d);
@@ -120,17 +131,28 @@ function memberItem(m) {
   return `<li><span>${esc(m.name)}</span><span class="cap ${capClass(c.main)}">${esc(c.main)}</span>${c.note ? `<span class="note">${esc(c.note)}</span>` : ''}</li>`;
 }
 
+const fold = (label, count, inner, open) => `<details class="fold"${open ? ' open' : ''}><summary>${label}${count !== '' ? ` <span>${count}</span>` : ''}</summary>${inner}</details>`;
+function folds(t) {
+  const mo = q && t.members.some(m => hit(m.name)), bo = q && t.bidders.some(b => hit(b.name));
+  let h = fold('BOC members', t.members.length, `<ul class="mem">${t.members.map(memberItem).join('')}</ul>`, mo);
+  h += t.bidders.length
+    ? fold('Bidders', t.bidders.length, `<ul class="bid">${t.bidders.map(b => `<li><b>${esc(b.name)}</b>${b.info.length ? '<br>' + b.info.map(i => `<span class="info">${esc(i)}</span>`).join('') : ''}</li>`).join('')}</ul>`, bo)
+    : '<p class="none">No bidders recorded</p>';
+  if (t.remark) h += fold('Remark', '', `<p class="remark">${esc(t.remark)}</p>`, false);
+  return h;
+}
+
 function dayView() {
   let nDays = 0, nTenders = 0, html = '';
   days.forEach(d => {
-    const ts = d.tenders.filter(t => pass(t) && hit([d.date, longDate(d.date), t.no, t.title, t.remark, t.members.map(m => m.name).join(' ')].join(' ')));
+    const ts = d.tenders.filter(t => pass(t) && hit([d.date, longDate(d.date), t.no, t.title, t.remark, t.members.map(m => m.name).join(' '), t.bidders.map(b => b.name).join(' ')].join(' ')));
     if (!ts.length) return;
     nDays++; nTenders += ts.length;
     const D = dt(d.date);
     html += `<section class="day"><div class="date"><div class="n">${D.getDate()}</div><div class="m">${D.toLocaleDateString('en-GB', {month: 'long', year: 'numeric'})}</div><div class="w">${D.toLocaleDateString('en-GB', {weekday: 'long'})}</div></div><div class="body">
       <p class="when"><b>${esc(d.time)}</b>&nbsp; ${esc(d.venue)}</p>` +
       ts.map(t => `<article class="tender"><span class="tag ${esc(t.auth)}">${esc(t.auth || 'Authority not set')}</span><h3>${esc(t.title)}</h3><div class="no">${esc(t.no)}</div>
-        <ul class="mem">${t.members.map(memberItem).join('')}</ul>${t.remark ? `<p class="remark">${esc(t.remark)}</p>` : ''}</article>`).join('') + `</div></section>`;
+        ${folds(t)}</article>`).join('') + `</div></section>`;
   });
   $('#count').textContent = nTenders ? `${nTenders} tender${nTenders > 1 ? 's' : ''} opened on ${nDays} BOC day${nDays > 1 ? 's' : ''}` : '';
   return html || '<p class="empty">Nothing matches. Clear the search or choose All authorities.</p>';
@@ -166,9 +188,12 @@ $('#chips').addEventListener('click', e => { const b = e.target.closest('.chip')
 }));
 
 fetch('boc-data.txt?v=' + Date.now())
-  .then(r => { if (!r.ok) throw 0; return r.text(); })
-  .then(t => { days = parse(t); chips(); render(); })
-  .catch(() => { $('#out').innerHTML = '<p class="empty">Could not load boc-data.txt. Keep it in the same folder as this page and open the page from the website, not by opening the file directly.</p>'; });
+  .then(r => { if (!r.ok) throw new Error('boc-data.txt was not found next to this page (error ' + r.status + '). Check the file name and that it is in the same folder as boc.html.'); return r.text(); })
+  .then(t => {
+    try { days = parse(t); chips(); render(); }
+    catch (e) { $('#out').innerHTML = '<p class="empty">boc-data.txt loaded but one entry could not be read (' + esc(e.message) + '). Check the latest entry against the format at the top of the file.</p>'; }
+  })
+  .catch(e => { $('#out').innerHTML = '<p class="empty">' + esc(e.message.startsWith('boc-data') ? e.message : 'The page could not read boc-data.txt. This happens when boc.html is opened directly from a device or folder. Open it from your website address instead.') + '</p>'; });
 </script>
 </body>
 </html>
