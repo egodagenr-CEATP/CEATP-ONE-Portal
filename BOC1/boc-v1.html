@@ -170,7 +170,7 @@ body{background:#fff;color:#111;font-size:11pt}.shell{max-width:none;padding:0}.
 const $=s=>document.querySelector(s);
 let days=[],view='day',query='',authority='all',expanded=false;
 // Set this to your deployed Cloudflare Worker URL. Configure the shared write key via the button.
-const SAVE_ENDPOINT='https://boc.egodagenr.workers.dev/';
+const SAVE_ENDPOINT='https://boc.egodagenr.workers.dev/  nre@0714321509';
 let writeKey=sessionStorage.getItem('bocWriteKey')||'';
 window.BOC_SAVE_ENDPOINT=sessionStorage.getItem('bocSaveEndpoint')||'';
 function configureSaving(){const endpoint=prompt('Automatic-save service URL:',SAVE_ENDPOINT);if(endpoint===null)return;if(endpoint.trim()){window.BOC_SAVE_ENDPOINT=endpoint.trim();sessionStorage.setItem('bocSaveEndpoint',endpoint.trim());}const key=prompt('Enter the BOC write key (provided when the secure saving service is configured):');if(key===null)return;writeKey=key;sessionStorage.setItem('bocWriteKey',key);alert('Save settings entered for this browser session.');}
