@@ -7,15 +7,6 @@
 # MEMBERS: same as above   (copies the previous tender's committee on that day)
 # REMARK: optional note about that tender
 
-DATE: 2026-11-18
-TIME: 10:00
-VENUE: sadf
-
-TENDER: dsgfasfag | fgafsaf | DPC
-MEMBERS:
-same as above
-BIDDERS:
-----
 
 DATE: 2026-11-05
 TIME: 10:00
